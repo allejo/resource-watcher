@@ -4,7 +4,7 @@ namespace JasonLewis\ResourceWatcher\Resource;
 
 use SplFileInfo;
 use JasonLewis\ResourceWatcher\Event;
-use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Filesystem;
 
 class FileResource implements ResourceInterface
 {
@@ -25,7 +25,7 @@ class FileResource implements ResourceInterface
     /**
      * Illuminate filesystem instance.
      *
-     * @var \Illuminate\Filesystem\Filesystem
+     * @var \Symfony\Component\Filesystem\Filesystem
      */
     protected $files;
 
@@ -47,8 +47,7 @@ class FileResource implements ResourceInterface
      * Create a new resource instance.
      *
      * @param  \SplFileInfo  $resource
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
+     * @param  \Symfony\Component\Filesystem\Filesystem  $files
      */
     public function __construct(SplFileInfo $resource, Filesystem $files)
     {
@@ -56,7 +55,7 @@ class FileResource implements ResourceInterface
         $this->path = $resource->getRealPath();
         $this->files = $files;
         $this->exists = $this->files->exists($this->path);
-        $this->lastModified = ! $this->exists ?: $this->files->lastModified($this->path);
+        $this->lastModified = ! $this->exists ?: filemtime($this->path);
     }
 
     /**
@@ -69,7 +68,7 @@ class FileResource implements ResourceInterface
         clearstatcache(true, $this->path);
 
         if (! $this->exists && $this->files->exists($this->path)) {
-            $this->lastModified = $this->files->lastModified($this->path);
+            $this->lastModified = filemtime($this->path);
             $this->exists = true;
 
             return [new Event($this, Event::RESOURCE_CREATED)];
@@ -78,7 +77,7 @@ class FileResource implements ResourceInterface
 
             return [new Event($this, Event::RESOURCE_DELETED)];
         } elseif ($this->exists && $this->isModified()) {
-            $this->lastModified = $this->files->lastModified($this->path);
+            $this->lastModified = filemtime($this->path);
 
             return [new Event($this, Event::RESOURCE_MODIFIED)];
         }
@@ -93,7 +92,7 @@ class FileResource implements ResourceInterface
      */
     public function isModified()
     {
-        return $this->lastModified < $this->files->lastModified($this->path);
+        return $this->lastModified < filemtime($this->path);
     }
 
     /**

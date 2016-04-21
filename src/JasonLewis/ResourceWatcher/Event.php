@@ -46,7 +46,6 @@ class Event
      *
      * @param  \JasonLewis\ResourceWatcher\Resource\ResourceInterface  $resource
      * @param  int  $code
-     * @return void
      */
     public function __construct(ResourceInterface $resource, $code)
     {

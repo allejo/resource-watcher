@@ -5,7 +5,6 @@ namespace JasonLewis\ResourceWatcher\Resource;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use JasonLewis\ResourceWatcher\Event;
-use Illuminate\Filesystem\Filesystem;
 
 class DirectoryResource extends FileResource implements ResourceInterface
 {

@@ -3,9 +3,9 @@
 use Closure;
 use SplFileInfo;
 use RuntimeException;
-use Illuminate\Filesystem\Filesystem;
 use JasonLewis\ResourceWatcher\Resource\FileResource;
 use JasonLewis\ResourceWatcher\Resource\DirectoryResource;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Watcher
 {
@@ -19,7 +19,7 @@ class Watcher
     /**
      * Illuminate filesystem instance.
      *
-     * @var \Illuminate\Filesystem\Filesystem
+     * @var \Symfony\Component\Filesystem\Filesystem
      */
     protected $files;
 
@@ -34,8 +34,7 @@ class Watcher
      * Create a new watcher instance.
      *
      * @param  \JasonLewis\ResourceWatcher\Tracker  $tracker
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
+     * @param  \Symfony\Component\Filesystem\Filesystem  $files
      */
     public function __construct(Tracker $tracker, Filesystem $files)
     {
@@ -53,7 +52,7 @@ class Watcher
     {
         if (! $this->files->exists($resource)) {
             throw new RuntimeException('Resource must exist before you can watch it.');
-        } elseif ($this->files->isDirectory($resource)) {
+        } elseif (is_dir($resource)) {
             $resource = new DirectoryResource(new SplFileInfo($resource), $this->files);
 
             $resource->setupDirectory();
