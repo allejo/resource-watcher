@@ -1,7 +1,8 @@
 {
     "name": "allejo/resource-watcher",
-    "description": "Simple PHP resource watcher library.",
+    "description": "Simple PHP resource watcher library - no Laravel dependencies",
     "keywords": ["resource", "assets", "symfony"],
+    "license": "BSD-2-Clause",
     "authors": [
         {
             "name": "Jason Lewis",

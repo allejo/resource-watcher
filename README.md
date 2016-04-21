@@ -2,22 +2,21 @@
 
 A resource watcher allows you to watch a resource for any changes. This means you can watch a directory and then listen for any changes to files within that directory or to the directory itself.
 
-[![Build Status](https://travis-ci.org/jasonlewis/resource-watcher.png?branch=master)](https://travis-ci.org/jasonlewis/resource-watcher)
+This is a fork of [Jason Lewis's project](https://github.com/jasonlewis/resource-watcher) without Laravel dependencies and uses the Symfony Filesystem instead. This fork is intended to be used for those who do not want to add yet another Filesystem object from another project.
 
 ## Installation
 
 To install Resource Watcher add it to the `requires` key of your `composer.json` file.
 
 ```
-"jasonlewis/resource-watcher": "1.2.*"
+"allejo/resource-watcher": "dev-master"
 ```
 
 Then update your project with `composer update`.
 
 ## Usage
 
-The Resource Watcher is best used from a console. An example of a console command can be found in the `watcher` file. This file is commented to give you
-an idea of how to configure and use a resource watcher. Once you've customized the command to your liking you can run it from your console.
+The Resource Watcher is best used from a console. An example of a console command can be found in the `watcher` file. This file is commented to give you an idea of how to configure and use a resource watcher. Once you've customized the command to your liking you can run it from your console.
 
 ```
 $ php watcher
@@ -27,10 +26,10 @@ Any changes you make to the resource will be outputted to the console.
 
 ## Quick Overview
 
-To watch resources you first need an instance of `JasonLewis\ResourceWatcher\Watcher`. This class has a few dependencies (`JasonLewis\ResourceWatcher\Tracker` and `Illuminate\Filesystem\Filesystem`) that must also be instantiated.
+To watch resources you first need an instance of `JasonLewis\ResourceWatcher\Watcher`. This class has a few dependencies (`JasonLewis\ResourceWatcher\Tracker` and `Symfony\Component\Filesystem\Filesystem`) that must also be instantiated.
 
 ```php
-$files = new Illuminate\Filesystem\Filesystem;
+$files = new Symfony\Component\Filesystem\Filesystem;
 $tracker = new JasonLewis\ResourceWatcher\Tracker;
 
 $watcher = new JasonLewis\ResourceWatcher\Watcher($tracker, $files);
@@ -85,21 +84,6 @@ $watcher->start(1000000, null, function($watcher) {
 	// Perhaps perform some other check and then stop the watch.
 	$watcher->stop();
 });
-```
-
-## Framework Integration
-
-### Laravel 4 and Laravel 5
-
-Included is a service provider for the Laravel framework. This service provider will bind an instance of `JasonLewis\ResourceWatcher\Watcher` to the application container under the `watcher` key.
-
-Register `JasonLewis\ResourceWatcher\Integration\LaravelServiceProvider` in the array of providers in `app/config/app.php`.
-
-```php
-$listener = $app['watcher']->watch('path/to/resource');
-
-// Or if you don't have access to an instance of the application container.
-$listener = app('watcher')->watch('path/to/resource');
 ```
 
 ## License
