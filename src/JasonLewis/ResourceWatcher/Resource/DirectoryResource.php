@@ -9,6 +9,11 @@ use JasonLewis\ResourceWatcher\Event;
 class DirectoryResource extends FileResource implements ResourceInterface
 {
     /**
+     * @var RecursiveIteratorIterator
+     */
+    protected $iterator;
+
+    /**
      * Array of directory resources descendants.
      *
      * @var array
@@ -18,10 +23,11 @@ class DirectoryResource extends FileResource implements ResourceInterface
     /**
      * Setup the directory resource.
      *
-     * @return void
+     * @param RecursiveIteratorIterator $iterator
      */
-    public function setupDirectory()
+    public function setupDirectory(RecursiveIteratorIterator $iterator = null)
     {
+        $this->iterator = $iterator;
         $this->descendants = $this->detectDirectoryDescendants();
     }
 
@@ -78,7 +84,11 @@ class DirectoryResource extends FileResource implements ResourceInterface
     {
         $descendants = [];
 
-        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->getPath())) as $file) {
+        if (is_null($this->iterator)) {
+            $this->iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->getPath()));
+        }
+
+        foreach ($this->iterator as $file) {
             if ($file->isDir() && ! in_array($file->getBasename(), array('.', '..'))) {
                 $resource = new DirectoryResource($file, $this->files);
 

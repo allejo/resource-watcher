@@ -45,17 +45,19 @@ class Watcher
     /**
      * Register a resource to be watched.
      *
-     * @param  string  $resource
-     * @return \JasonLewis\ResourceWatcher\Listener
+     * @param  string                    $resource
+     * @param \RecursiveIteratorIterator $iterator
+     *
+     * @return Listener
      */
-    public function watch($resource)
+    public function watch($resource, \RecursiveIteratorIterator $iterator = null)
     {
         if (! $this->files->exists($resource)) {
             throw new RuntimeException('Resource must exist before you can watch it.');
         } elseif (is_dir($resource)) {
             $resource = new DirectoryResource(new SplFileInfo($resource), $this->files);
 
-            $resource->setupDirectory();
+            $resource->setupDirectory($iterator);
         } else {
             $resource = new FileResource(new SplFileInfo($resource), $this->files);
         }
