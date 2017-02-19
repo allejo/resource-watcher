@@ -6,13 +6,11 @@ This is a fork of [Jason Lewis's project](https://github.com/jasonlewis/resource
 
 ## Installation
 
-To install Resource Watcher add it to the `requires` key of your `composer.json` file.
+Use composer to add this project as a dependency.
 
 ```
-"allejo/resource-watcher": "dev-master"
+composer require allejo/resource-watcher
 ```
-
-Then update your project with `composer update`.
 
 ## Usage
 

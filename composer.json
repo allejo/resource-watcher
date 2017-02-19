@@ -1,7 +1,11 @@
 {
     "name": "allejo/resource-watcher",
     "description": "Simple PHP resource watcher library - no Laravel dependencies",
-    "keywords": ["resource", "assets", "symfony"],
+    "keywords": [
+        "resource",
+        "assets",
+        "symfony"
+    ],
     "license": "BSD-2-Clause",
     "authors": [
         {
@@ -11,7 +15,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "symfony/filesystem": "^3.0"
+        "symfony/filesystem": "^2.8|^3.0"
     },
     "require-dev": {
         "mockery/mockery": "~0.9",
@@ -20,6 +24,14 @@
     "autoload": {
         "psr-0": {
             "JasonLewis\\ResourceWatcher": "src/"
+        }
+    },
+    "conflict": {
+        "jasonlewis/resource-watcher": "*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
         }
     }
 }
